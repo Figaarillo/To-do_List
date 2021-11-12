@@ -47,7 +47,7 @@ export default class Model {
 		this.save();
 	}
 
-	addTodo(title, description) {
+	addToDo(title, description) {
 		const todo = {
 			id: this.currentId++,
 			// Al tener el mismo nombre, JS ya le asigna el valor que recibimos por parametro

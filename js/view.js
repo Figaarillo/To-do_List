@@ -1,60 +1,52 @@
-// Aca se va a manejar la tabla
-
-import AddTodo from './components/add-todo.js';
+import Add from './components/add-todo.js';
 import Modal from './components/modal.js';
 import Filter from './components/filters.js';
-
+// Aca se va a manejar la tabla
 export default class View {
+	// Traemos las clases para hacer uso de sus funciones
 	constructor() {
 		this.model = null;
 		this.table = document.getElementById('table');
 		// Incorporamos el boton de add en la tabla
-		// Funcion para le boton 'add'
-		this.addTodoForm = new AddTodo();
+		this.addToDoForm = new Add();
 		this.modal = new Modal();
 		this.filters = new Filter();
-
-		/* Gracias a que usamos una función flecha es que se puede usar el 'this', ya que usando una función normal el this hace referencia a otra cosa. */
-		this.addTodoForm.onClick((title, description) =>
-			this.addTodo(title, description)
+		/* Gracias a que usamos una función flecha es que se puede usar el 'this' para llamar a la funcion addToDo, ya que usando una función normal el this hace referencia a otra cosa. */
+		this.addToDoForm.onClick((title, description) =>
+			this.addToDo(title, description)
 		);
 		this.modal.onClick((id, values) => this.editTodo(id, values));
 		this.filters.onClick((filters) => this.filter(filters));
 	}
-
+	// Se settea el modelo
 	setModel(model) {
 		this.model = model;
 	}
-
+	// Metodo para renderizar la lista al cargar la página
 	render() {
-		const todos = this.model.getTodos();
-		// Forma antigua de hacerlo
-		/* for (const to_Do of toDo) {
-			this.createRow(to_Do);
-		} */
-		todos.forEach((todo) => this.createRow(todo));
+		// La variable toDo recibe toda la lista de to dos y recrea todas las filas que sean necesarias
+		const toDo = this.model.getTodos();
+		// Por cada en el modelo se crea una fila
+		toDo.forEach((to_do) => this.createRow(to_do));
 	}
-
+	// Metodo para realizar la funcion de busqueda
 	filter(filters) {
 		const { type, words } = filters;
+		// De esa¿ta forma se elimina el primer elemento de la tabla que corresponde a los titulos
 		const [, ...rows] = this.table.getElementsByTagName('tr');
 		for (const row of rows) {
 			const [title, description, completed] = row.children;
 			let shouldHide = false;
-
 			if (words) {
 				shouldHide =
 					!title.innerText.includes(words) &&
 					!description.innerText.includes(words);
 			}
-
 			const shouldBeCompleted = type === 'completed';
 			const isCompleted = completed.children[0].checked;
-
 			if (type !== 'all' && shouldBeCompleted !== isCompleted) {
 				shouldHide = true;
 			}
-
 			if (shouldHide) {
 				row.classList.add('d-none');
 			} else {
@@ -62,16 +54,16 @@ export default class View {
 			}
 		}
 	}
-
-	addTodo(title, description) {
-		const todo = this.model.addTodo(title, description);
-		this.createRow(todo);
+	// Llamada a la funcion para añadir to dos
+	addToDo(title, description) {
+		const toDo = this.model.addToDo(title, description);
+		this.createRow(toDo);
 	}
-
+	// Funcion de toggle
 	toggleCompleted(id) {
 		this.model.toggleCompleted(id);
 	}
-
+	//
 	editTodo(id, values) {
 		this.model.editTodo(id, values);
 		const row = document.getElementById(id);
@@ -79,12 +71,12 @@ export default class View {
 		row.children[1].innerText = values.description;
 		row.children[2].children[0].checked = values.completed;
 	}
-
+	//
 	removeTodo(id) {
 		this.model.removeTodo(id);
 		document.getElementById(id).remove();
 	}
-
+	//
 	createRow(todo) {
 		const row = table.insertRow();
 		// Añadimos un id para identifacar la fila y hacemos que se incremente cada vez que se ejecuta
@@ -92,10 +84,8 @@ export default class View {
 		row.innerHTML = `
 		<td>${todo.title}</td>
 		<td>${todo.description}</td>
-		<td class="text-center">
-		</td>
-		<td class="text-right">
-		</td>
+		<td class="text-center"></td>
+		<td class="text-right"></td>
 		`;
 		// Creamos el input del tipo checkbox
 		const checkbox = document.createElement('input');

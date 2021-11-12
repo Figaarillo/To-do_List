@@ -2,7 +2,7 @@ import Alert from './alerts.js';
 
 // Aca se  manejara la funcion de 'add'
 
-export default class AddTodo {
+export default class Add {
 	constructor() {
 		this.btn = document.getElementById('add');
 		this.title = document.getElementById('title');
