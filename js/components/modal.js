@@ -7,18 +7,19 @@ export default class Modal {
 		this.btn = document.getElementById('modal-btn');
 		this.completed = document.getElementById('modal-completed');
 		this.alert = new Alert('modal-alert');
-		this.todo = null;
+		this.toDo = null;
+	}
+	//
+	setValues(toDo) {
+		this.toDo = toDo;
+		this.title.value = toDo.title;
+		this.description.value = toDo.description;
+		this.completed.checked = toDo.completed;
 	}
 
-	setValues(todo) {
-		this.todo = todo;
-		this.title.value = todo.title;
-		this.description.value = todo.description;
-		this.completed.checked = todo.completed;
-	}
-
-	onClick(callback) {
-		this.btn.onclick = () => {
+	onClickEdit(callback) {
+		this.btn.addEventListener('click', () => {
+			// Si el valor del titulo y la descripcion son falsos, es decir, estan vacios, se ejecuta el mensaje
 			if (!this.title.value || !this.description.value) {
 				this.alert.show('Title and description are required');
 				return;
@@ -29,6 +30,6 @@ export default class Modal {
 				description: this.description.value,
 				completed: this.completed.checked,
 			});
-		};
+		});
 	}
 }

@@ -16,8 +16,8 @@ export default class View {
 		this.addToDoForm.onClickAdd((title, description) =>
 			this.addToDo(title, description)
 		);
-		this.modal.onClick((id, values) => this.editToDo(id, values));
-		this.filters.onClick((filters) => this.filter(filters));
+		this.modal.onClickEdit((id, values) => this.editToDo(id, values));
+		this.filters.onClickSearch((filters) => this.filter(filters));
 	}
 	// Se settea el modelo
 	setModel(model) {
@@ -78,21 +78,21 @@ export default class View {
 		document.getElementById(id).remove();
 	}
 	//
-	createRow(todo) {
+	createRow(toDo) {
 		const row = table.insertRow();
 		// Añadimos un id para identifacar la fila y hacemos que se incremente cada vez que se ejecuta
-		row.setAttribute('id', todo.id);
+		row.setAttribute('id', toDo.id);
 		row.innerHTML = `
-		<td>${todo.title}</td>
-		<td>${todo.description}</td>
+		<td>${toDo.title}</td>
+		<td>${toDo.description}</td>
 		<td class="text-center"></td>
 		<td class="text-right"></td>
 		`;
 		// Creamos el input del tipo checkbox
 		const checkbox = document.createElement('input');
 		checkbox.type = 'checkbox';
-		checkbox.checked = todo.completed;
-		checkbox.onclick = () => this.toggleCompleted(todo.id);
+		checkbox.checked = toDo.completed;
+		checkbox.addEventListener('click', () => this.toggleCompleted(toDo.id));
 		row.children[2].appendChild(checkbox);
 		// Creacion del modal para editar los to do
 		const editBtn = document.createElement('button');
@@ -102,7 +102,7 @@ export default class View {
 		editBtn.setAttribute('data-target', '#modal');
 		editBtn.addEventListener('click', () =>
 			this.modal.setValues({
-				id: todo.id,
+				id: toDo.id,
 				title: row.children[0].innerText,
 				description: row.children[1].innerText,
 				completed: row.children[2].children[0].checked,
@@ -113,7 +113,7 @@ export default class View {
 		const removeBtn = document.createElement('button');
 		removeBtn.classList.add('btn', 'btn-danger', 'mb-1', 'ml-1');
 		removeBtn.innerHTML = '<i class="fa fa-trash"></i>';
-		removeBtn.onclick = () => this.removeToDo(todo.id);
+		removeBtn.addEventListener('click', () => this.removeToDo(toDo.id));
 		row.children[3].appendChild(removeBtn);
 	}
 }
