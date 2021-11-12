@@ -1,7 +1,7 @@
 import Add from './components/add-todo.js';
 import Modal from './components/modal.js';
 import Filter from './components/filters.js';
-// Aca se va a manejar la tabla
+// Clase para manejar las funciones de la tabla
 export default class View {
 	// Traemos las clases para hacer uso de sus funciones
 	constructor() {
@@ -11,11 +11,12 @@ export default class View {
 		this.addToDoForm = new Add();
 		this.modal = new Modal();
 		this.filters = new Filter();
-		/* Gracias a que usamos una función flecha es que se puede usar el 'this' para llamar a la funcion addToDo, ya que usando una función normal el this hace referencia a otra cosa. */
-		this.addToDoForm.onClick((title, description) =>
+		/* Con la funcion add this.addToDoForm llamamos a la funcion onClickAdd de la clase Add, donde si se ejecuta el else, se ejecutara un callback que será el this.addToDo de esta clase
+		Gracias a que usamos una función flecha es que se puede usar el 'this' para llamar a la funcion addToDo, ya que usando una función normal el this hace referencia a otra cosa. */
+		this.addToDoForm.onClickAdd((title, description) =>
 			this.addToDo(title, description)
 		);
-		this.modal.onClick((id, values) => this.editTodo(id, values));
+		this.modal.onClick((id, values) => this.editToDo(id, values));
 		this.filters.onClick((filters) => this.filter(filters));
 	}
 	// Se settea el modelo
@@ -25,7 +26,7 @@ export default class View {
 	// Metodo para renderizar la lista al cargar la página
 	render() {
 		// La variable toDo recibe toda la lista de to dos y recrea todas las filas que sean necesarias
-		const toDo = this.model.getTodos();
+		const toDo = this.model.getToDo();
 		// Por cada en el modelo se crea una fila
 		toDo.forEach((to_do) => this.createRow(to_do));
 	}
@@ -64,16 +65,16 @@ export default class View {
 		this.model.toggleCompleted(id);
 	}
 	//
-	editTodo(id, values) {
-		this.model.editTodo(id, values);
+	editToDo(id, values) {
+		this.model.editToDo(id, values);
 		const row = document.getElementById(id);
 		row.children[0].innerText = values.title;
 		row.children[1].innerText = values.description;
 		row.children[2].children[0].checked = values.completed;
 	}
 	//
-	removeTodo(id) {
-		this.model.removeTodo(id);
+	removeToDo(id) {
+		this.model.removeToDo(id);
 		document.getElementById(id).remove();
 	}
 	//
@@ -112,7 +113,7 @@ export default class View {
 		const removeBtn = document.createElement('button');
 		removeBtn.classList.add('btn', 'btn-danger', 'mb-1', 'ml-1');
 		removeBtn.innerHTML = '<i class="fa fa-trash"></i>';
-		removeBtn.onclick = () => this.removeTodo(todo.id);
+		removeBtn.onclick = () => this.removeToDo(todo.id);
 		row.children[3].appendChild(removeBtn);
 	}
 }

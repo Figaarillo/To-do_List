@@ -1,10 +1,11 @@
+// Clase para llamar a las funciones de la tabla
 export default class Model {
 	constructor() {
 		this.view = null;
 		// Para almacenar los ToDo
-		this.todos = JSON.parse(localStorage.getItem('todos'));
-		if (!this.todos || this.todos.length < 1) {
-			this.todos = [
+		this.toDo = JSON.parse(localStorage.getItem('todos'));
+		if (!this.toDo || this.toDo.length < 1) {
+			this.toDo = [
 				{
 					id: 0,
 					title: 'Learn JS',
@@ -14,63 +15,52 @@ export default class Model {
 			];
 			this.currentId = 1;
 		} else {
-			this.currentId = this.todos[this.todos.length - 1].id + 1;
+			this.currentId = this.toDo[this.toDo.length - 1].id + 1;
 		}
 	}
-
 	setView(view) {
 		this.view = view;
 	}
-
+	// Metodo para almacenar en una lista todos lo to dos que tengamos
 	save() {
-		localStorage.setItem('todos', JSON.stringify(this.todos));
+		localStorage.setItem('todos', JSON.stringify(this.toDo));
 	}
-
-	getTodos() {
-		return this.todos.map((todo) => ({ ...todo }));
+	getToDo() {
+		return this.toDo.map((todo) => ({ ...todo }));
 	}
-
-	findTodo(id) {
-		return this.todos.findIndex((todo) => todo.id === id);
+	findToDo(id) {
+		return this.toDo.findIndex((todo) => todo.id === id);
 	}
-
 	toggleCompleted(id) {
-		const index = this.findTodo(id);
-		const todo = this.todos[index];
+		const index = this.findToDo(id);
+		const todo = this.toDo[index];
 		todo.completed = !todo.completed;
 		this.save();
 	}
-
-	editTodo(id, values) {
-		const index = this.findTodo(id);
-		Object.assign(this.todos[index], values);
+	editToDo(id, values) {
+		const index = this.findToDo(id);
+		Object.assign(this.toDo[index], values);
 		this.save();
 	}
-
 	addToDo(title, description) {
-		const todo = {
+		const toDo = {
 			id: this.currentId++,
 			// Al tener el mismo nombre, JS ya le asigna el valor que recibimos por parametro
 			title,
 			description,
 			completed: false,
 		};
-
-		this.todos.push(todo);
-		// console.log(this.toDo);
-		// Con los 3 puntitos extendemos el objeto, es como si crearamos un clon para que el original no pueda ser modificado
-		console.log(this.todos);
+		this.toDo.push(toDo);
 		this.save();
-
-		return { ...todo };
+		// Con los 3 puntitos extendemos el objeto, es como si crearamos un clon para que el original no pueda ser modificado
+		return { ...toDo };
 	}
-
-	removeTodo(id) {
+	removeToDo(id) {
 		// vamos a buscar el indice del ToDo
 		// Para ello usamos el findIndex donde indicamos que index será true cuando el id del toDo sea  igual al id que reciba como parametro que deberia ser el id de la fila en ese momento
-		const index = this.findTodo(id);
+		const index = this.findToDo(id);
 		// Con splice vamos a borrar el elemento del array, dado que al borrarlo del model quedaba en el array
-		this.todos.splice(index, 1);
+		this.toDo.splice(index, 1);
 		this.save();
 	}
 }
