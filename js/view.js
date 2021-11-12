@@ -93,19 +93,20 @@ export default class View {
 		checkbox.checked = todo.completed;
 		checkbox.onclick = () => this.toggleCompleted(todo.id);
 		row.children[2].appendChild(checkbox);
-		// Madal
+		// Creacion del modal para editar los to do
 		const editBtn = document.createElement('button');
 		editBtn.classList.add('btn', 'btn-primary', 'mb-1');
 		editBtn.innerHTML = '<i class="fa fa-pencil"></i>';
 		editBtn.setAttribute('data-toggle', 'modal');
 		editBtn.setAttribute('data-target', '#modal');
-		editBtn.onclick = () =>
+		editBtn.addEventListener('click', () =>
 			this.modal.setValues({
 				id: todo.id,
 				title: row.children[0].innerText,
 				description: row.children[1].innerText,
 				completed: row.children[2].children[0].checked,
-			});
+			})
+		);
 		row.children[3].appendChild(editBtn);
 		// Creamos el boton de borrar y luego lo agregamos a la fila que se crea
 		const removeBtn = document.createElement('button');
