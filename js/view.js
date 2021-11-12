@@ -33,7 +33,7 @@ export default class View {
 	// Metodo para realizar la funcion de busqueda
 	filter(filters) {
 		const { type, words } = filters;
-		// De esa¿ta forma se elimina el primer elemento de la tabla que corresponde a los titulos
+		// De esta forma se elimina el primer elemento de la tabla que corresponde a los titulos
 		const [, ...rows] = this.table.getElementsByTagName('tr');
 		for (const row of rows) {
 			const [title, description, completed] = row.children;
