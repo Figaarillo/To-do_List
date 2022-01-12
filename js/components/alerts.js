@@ -5,7 +5,7 @@ export default class Alert {
 	// Mostrar el mensaje de error
 	show(message) {
 		this.alert.classList.remove('d-none');
-		this.alert.innerText = message;
+		this.alert.innerText = `${message} ;-)`;
 	}
 	// Ocultar el mensaje de error
 	hide() {

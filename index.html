@@ -19,6 +19,7 @@
 
 	<body>
 		<!-- Navbar -->
+
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<a class="navbar-brand" href="#">JS Todo List</a>
 			<button
@@ -33,13 +34,6 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
-						<a class="nav-link" href="#">
-							Home <span class="sr-only">(current)</span>
-						</a>
-					</li>
-				</ul>
 				<form class="form-inline my-2 my-lg-0" id="filters">
 					<label class="font-weight-bold text-info mr-3">Filters</label>
 					<input type="radio" name="type" value="all" class="mx-1" />
@@ -53,14 +47,10 @@
 						class="form-control mr-sm-2"
 						type="search"
 						name="words"
-						placeholder="Words"
+						placeholder="Search any word &#128373;"
 						aria-label="Search"
 					/>
-					<button
-						class="btn btn-outline-info my-2 my-sm-0"
-						type="submit"
-						id="search"
-					>
+					<button class="btn btn-outline-info my-2 my-sm-0" type="submit" id="search">
 						Search
 					</button>
 				</form>
@@ -81,21 +71,12 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title">Edit Todo</h5>
-						<button
-							type="button"
-							class="close"
-							data-dismiss="modal"
-							aria-label="Close"
-						>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
-						<div
-							class="alert alert-danger d-none"
-							role="alert"
-							id="modal-alert"
-						>
+						<div class="alert alert-danger d-none" role="alert" id="modal-alert">
 							A simple danger alert—check it out!
 						</div>
 						<form>
@@ -122,16 +103,10 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button
-							type="button"
-							class="btn btn-secondary"
-							data-dismiss="modal"
-						>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">
 							Close
 						</button>
-						<button type="button" class="btn btn-info" id="modal-btn">
-							Save
-						</button>
+						<button type="button" class="btn btn-info" id="modal-btn">Save</button>
 					</div>
 				</div>
 			</div>
@@ -154,30 +129,20 @@
 									type="text"
 									id="title"
 									class="form-control ml-sm-2"
-									placeholder="Learn JS"
+									placeholder="Add a title"
 								/>
 							</div>
-							<div
-								class="
-									px-sm-2
-									col-sm-7
-									d-sm-flex
-									align-items-center
-									mt-2 mt-sm-0
-								"
-							>
+							<div class="px-sm-2 col-sm-7 d-sm-flex align-items-center mt-2 mt-sm-0">
 								<label class="m-sm-0">Description</label>
 								<input
 									type="text"
 									id="description"
 									class="form-control ml-sm-2"
-									placeholder="Watch JS Tutorials"
+									placeholder="Describe what you want to do &#128570"
 								/>
 							</div>
 							<div class="col-sm-2 d-sm-flex justify-content-end mt-4 mt-sm-0">
-								<button type="button" class="btn btn-info btn-block" id="add">
-									Add
-								</button>
+								<button type="button" class="btn btn-info btn-block" id="add">Add</button>
 							</div>
 						</div>
 					</form>
@@ -197,23 +162,7 @@
 								<th scope="col"></th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>Learn JS</td>
-								<td>Watch Javascript tutorials on Youtube</td>
-								<td class="text-center">
-									<input type="checkbox" />
-								</td>
-								<td class="text-right">
-									<button class="btn btn-primary mb-1">
-										<i class="fa fa-pencil"></i>
-									</button>
-									<button class="btn btn-danger mb-1 ml-1">
-										<i class="fa fa-trash"></i>
-									</button>
-								</td>
-							</tr>
-						</tbody>
+						<tbody></tbody>
 					</table>
 				</div>
 			</div>

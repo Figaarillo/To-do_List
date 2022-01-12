@@ -1,5 +1,5 @@
 import Alert from './alerts.js';
-// Aca se  manejara la funcion de 'add'
+// Funcion que permite añador nuevos to-dos
 export default class Add {
 	constructor() {
 		this.btn = document.getElementById('add');
@@ -10,7 +10,7 @@ export default class Add {
 	onClickAdd(callback) {
 		this.btn.onclick = () => {
 			if (title.value === '' || description.value === '') {
-				this.alert.show('Title and description are required');
+				this.alert.show("Don't forget to add a title and description ;-)");
 			} else {
 				this.alert.hide();
 				callback(this.title.value, this.description.value);

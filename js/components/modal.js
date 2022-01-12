@@ -9,7 +9,7 @@ export default class Modal {
 		this.alert = new Alert('modal-alert');
 		this.toDo = null;
 	}
-	//
+
 	setValues(toDo) {
 		this.toDo = toDo;
 		this.title.value = toDo.title;
@@ -19,13 +19,15 @@ export default class Modal {
 
 	onClickEdit(callback) {
 		this.btn.addEventListener('click', () => {
-			// Si el valor del titulo y la descripcion son falsos, es decir, estan vacios, se ejecuta el mensaje
+			// Si el valor del titulo y la descripcion estan vacios, se ejecuta el mensaje
 			if (!this.title.value || !this.description.value) {
 				this.alert.show('Title and description are required');
 				return;
 			}
+
 			$('#modal').modal('toggle');
-			callback(this.todo.id, {
+
+			callback(this.toDo.id, {
 				title: this.title.value,
 				description: this.description.value,
 				completed: this.completed.checked,

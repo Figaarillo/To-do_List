@@ -1,70 +1,66 @@
 import Add from './components/add-todo.js';
 import Modal from './components/modal.js';
 import Filter from './components/filters.js';
+
 // Clase para manejar las funciones de la tabla
 export default class View {
-	// Traemos las clases para hacer uso de sus funciones
 	constructor() {
 		this.model = null;
 		this.table = document.getElementById('table');
-		// Incorporamos el boton de add en la tabla
-		this.addToDoForm = new Add();
+		this.addToDoForm = new Add(); // Se trae el componenete del boton add
 		this.modal = new Modal();
 		this.filters = new Filter();
-		/* Con la funcion add this.addToDoForm llamamos a la funcion onClickAdd de la clase Add, donde si se ejecuta el else, se ejecutara un callback que será el this.addToDo de esta clase
-		Gracias a que usamos una función flecha es que se puede usar el 'this' para llamar a la funcion addToDo, ya que usando una función normal el this hace referencia a otra cosa. */
-		this.addToDoForm.onClickAdd((title, description) =>
-			this.addToDo(title, description)
-		);
+
+		/* Funcion que permite añadir un nuevo todo al formuladio al hacer click en add */
+		this.addToDoForm.onClickAdd((title, description) => this.addToDo(title, description));
 		this.modal.onClickEdit((id, values) => this.editToDo(id, values));
-		this.filters.onClickSearch((filters) => this.filter(filters));
+		this.filters.onClickSearch(filters => this.filter(filters));
 	}
-	// Se settea el modelo
+	// Se settea una instancia del model para poder hacer uso del mismo
 	setModel(model) {
 		this.model = model;
 	}
 	// Metodo para renderizar la lista al cargar la página
 	render() {
-		// La variable toDo recibe toda la lista de to dos y recrea todas las filas que sean necesarias
-		const toDo = this.model.getToDo();
+		const toDo = this.model.getToDo(); // Recibe toda la lista de toDos y recrea todas las filas que sean necesarias
 		// Por cada en el modelo se crea una fila
-		toDo.forEach((to_do) => this.createRow(to_do));
+		toDo.forEach(todo => this.createRow(todo));
 	}
 	// Metodo para realizar la funcion de busqueda
 	filter(filters) {
-		const { type, words } = filters;
+		const { type, words } = filters; // Obtenemos el tipo y las palabras del componente filtro
+
 		// De esta forma se elimina el primer elemento de la tabla que corresponde a los titulos
 		const [, ...rows] = this.table.getElementsByTagName('tr');
 		for (const row of rows) {
 			const [title, description, completed] = row.children;
-			let shouldHide = false;
+			let hideRows = false;
+
+			// Durante la busqueta, si la row contiene palabras pero no las buscadas, se oculta
 			if (words) {
-				shouldHide =
-					!title.innerText.includes(words) &&
-					!description.innerText.includes(words);
+				hideRows =
+					!title.innerText.includes(words) && !description.innerText.includes(words);
 			}
-			const shouldBeCompleted = type === 'completed';
-			const isCompleted = completed.children[0].checked;
-			if (type !== 'all' && shouldBeCompleted !== isCompleted) {
-				shouldHide = true;
-			}
-			if (shouldHide) {
-				row.classList.add('d-none');
-			} else {
-				row.classList.remove('d-none');
-			}
+
+			const shouldBeCompleted = type === 'completed'; // contante que almacena la condicion buscada
+			const isCompleted = completed.children[0].checked; // Constatante que verifica el tipo de cada fila
+
+			if (type !== 'all' && shouldBeCompleted !== isCompleted) hideRows = true;
+
+			if (hideRows) row.classList.add('d-none');
+			else row.classList.remove('d-none'); // Muestra filas
 		}
 	}
-	// Llamada a la funcion para añadir to dos
+
 	addToDo(title, description) {
-		const toDo = this.model.addToDo(title, description);
-		this.createRow(toDo);
+		const toDo = this.model.addToDo(title, description); // Se crea un objeto toDo
+		this.createRow(toDo); // Se pasa este objeto crado, al createRow para que haga la fila
 	}
-	// Funcion de toggle
+	// Funcion de toggle para marcar si una tarea pasa a completed o uncompleted
 	toggleCompleted(id) {
 		this.model.toggleCompleted(id);
 	}
-	//
+
 	editToDo(id, values) {
 		this.model.editToDo(id, values);
 		const row = document.getElementById(id);
@@ -72,12 +68,12 @@ export default class View {
 		row.children[1].innerText = values.description;
 		row.children[2].children[0].checked = values.completed;
 	}
-	//
+
 	removeToDo(id) {
 		this.model.removeToDo(id);
 		document.getElementById(id).remove();
 	}
-	//
+
 	createRow(toDo) {
 		const row = table.insertRow();
 		// Añadimos un id para identifacar la fila y hacemos que se incremente cada vez que se ejecuta
@@ -88,13 +84,13 @@ export default class View {
 		<td class="text-center"></td>
 		<td class="text-right"></td>
 		`;
-		// Creamos el input del tipo checkbox
-		const checkbox = document.createElement('input');
+
+		const checkbox = document.createElement('input'); // Creamos el input del tipo checkbox
 		checkbox.type = 'checkbox';
 		checkbox.checked = toDo.completed;
 		checkbox.addEventListener('click', () => this.toggleCompleted(toDo.id));
 		row.children[2].appendChild(checkbox);
-		// Creacion del modal para editar los to do
+
 		const editBtn = document.createElement('button');
 		editBtn.classList.add('btn', 'btn-primary', 'mb-1');
 		editBtn.innerHTML = '<i class="fa fa-pencil"></i>';
@@ -109,7 +105,6 @@ export default class View {
 			})
 		);
 		row.children[3].appendChild(editBtn);
-		// Creamos el boton de borrar y luego lo agregamos a la fila que se crea
 		const removeBtn = document.createElement('button');
 		removeBtn.classList.add('btn', 'btn-danger', 'mb-1', 'ml-1');
 		removeBtn.innerHTML = '<i class="fa fa-trash"></i>';
